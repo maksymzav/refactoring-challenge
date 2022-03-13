@@ -1,0 +1,33 @@
+<div matDialogTitle>Filters</div>
+
+<mat-dialog-content fxLayout="column">
+    <mat-form-field appearance="outline" color="accent">
+        <mat-label>Status</mat-label>
+        <mat-select [(value)]="state">
+            <mat-option [value]="''">All statuses</mat-option>
+            <mat-option [value]="states.scheduled">Scheduled</mat-option>
+            <mat-option [value]="states.running">Running</mat-option>
+            <mat-option [value]="states.succeed">Succeeded</mat-option>
+            <mat-option [value]="states.canceled">Canceled</mat-option>
+            <mat-option [value]="states.failed">Failed</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent">
+        <mat-label>Type</mat-label>
+        <mat-select [(value)]="type">
+            <mat-option [value]="''">All types</mat-option>
+            <mat-option [value]="types.acknowledgeOrder">Acknowledge</mat-option>
+            <mat-option [value]="types.unacknowledgeOrder">Unacknowledge</mat-option>
+            <mat-option [value]="types.refundOrder">Refund</mat-option>
+            <mat-option [value]="types.shipOrder">Ship</mat-option>
+            <mat-option [value]="types.acceptOrder">Accept</mat-option>
+            <mat-option [value]="types.cancelOrder">Cancel</mat-option>
+            <mat-option [value]="types.refuseOrder">Refuse</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button matDialogClose color="accent">Cancel</button>
+    <button mat-button (click)="apply()" color="accent">Filter</button>
+</mat-dialog-actions>

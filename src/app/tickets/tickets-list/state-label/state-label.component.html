@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="state">
+    <div *ngSwitchCase="ticketState.succeed" class="rch-label mat-chip green">
+        <ng-container>Success</ng-container>
+    </div>
+    <div *ngSwitchCase="ticketState.failed" class="rch-label mat-chip red">
+        <ng-container>Failed</ng-container>
+    </div>
+    <div *ngSwitchCase="ticketState.canceled" class="rch-label mat-chip grey">
+        <ng-container>Canceled</ng-container>
+    </div>
+    <div *ngSwitchCase="ticketState.running" class="rch-label mat-chip navy">
+        <ng-container>Running</ng-container>
+    </div>
+    <div *ngSwitchCase="ticketState.scheduled" class="rch-label mat-chip navy">
+        <ng-container>Scheduled</ng-container>
+    </div>
+</ng-container>
