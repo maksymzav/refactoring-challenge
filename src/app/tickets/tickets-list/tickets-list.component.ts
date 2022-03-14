@@ -8,38 +8,43 @@ import {TicketsDataService} from './tickets-data.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {MatTableDataSource} from '@angular/material/table';
 import {Ticket} from '../entities/ticket';
+import {TableOperations} from './table-operations/table-operations';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'rch-tickets-list',
   templateUrl: './tickets-list.component.html',
   styleUrls: ['./tickets-list.component.scss']
 })
-export class TicketsListComponent implements OnInit {
+export class TicketsListComponent extends TableOperations<Ticket> implements OnInit {
 
-  displayedColumns = ['id', 'type', 'state'];
+  override displayedColumns = ['id', 'type', 'state'];
   hasTickets = false;
-  dataSource: MatTableDataSource<Ticket> = new MatTableDataSource<Ticket>();
+
 
   ticketState = TicketState;
   ticketType = TicketType;
 
   selectedType?: TicketType;
   selectedState?: TicketState;
-
-  isLoadingResults = false;
-  isAdmin = true;
-  currentStore = {id: 'someId', name: 'My Awesome Store'};
-  token = 'I am hidden';
-  apiDocsLink = 'https://google.com';
+  isAdmin = false;
+  currentStore: {id?: string, name?: string} = {};
+  token = '';
+  apiDocsLink = '';
 
   constructor(
     private matDialog: MatDialog,
     private ticketsDataService: TicketsDataService,
     private httpClient: HttpClient) {
+    super();
   }
 
-  ngOnInit() {
-    this.fetchData();
+  override ngOnInit() {
+    super.ngOnInit();
+    this.isAdmin = true;
+    this.currentStore = {id: 'someId', name: 'My Awesome Store'};
+    this.token = 'I am hidden';
+    this.apiDocsLink = 'https://google.com';
     this.ticketsDataService.watchUpdates().subscribe(() => {
       this.isLoadingResults = true;
       this.fetchData();
@@ -65,10 +70,10 @@ export class TicketsListComponent implements OnInit {
   }
 
   goToToZapier() {
-    console.log('navigated to ');
+    console.log('navigated to zapier');
   }
 
-  private fetchData() {
+  override fetchData() {
     const params = new HttpParams()
       .set('type', this.selectedType || TicketType.default)
       .set('state', this.selectedState || '');
@@ -79,7 +84,12 @@ export class TicketsListComponent implements OnInit {
         this.isLoadingResults = false;
         this.dataSource = new MatTableDataSource(data._embedded.ticket);
       }
-
     });
   }
+
+  protected fetchCollection(params: { limit: number; page: number; search: string }): Observable<{ total: number; dataList: Ticket[] }> {
+    return of({total: 0, dataList: []});
+  }
+
+
 }
